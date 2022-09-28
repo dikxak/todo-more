@@ -8,14 +8,7 @@ const Todos = props => {
   let content;
   if (props.todoData.length > 0) {
     content = props.todoData.map(data => {
-      return (
-        <TodoItem
-          key={data.id}
-          text={data.taskText}
-          category={data.taskCategory}
-          remainingDays={data.taskRemainingDay}
-        />
-      );
+      return <TodoItem key={data.id} data={data} />;
     });
   } else {
     content = (

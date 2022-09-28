@@ -4,6 +4,14 @@ import useHttp from '../../hooks/use-input';
 
 import classes from './TodoForm.module.css';
 
+const validateEmptyValue = val => {
+  return val.trim().length > 0;
+};
+
+const getInvalidClass = errorState => {
+  return errorState ? 'invalid' : '';
+};
+
 const TodoForm = props => {
   const {
     todoInput: todoText,
@@ -12,7 +20,7 @@ const TodoForm = props => {
     todoInputHasError: todoTextHasError,
     todoInputIsValid: todoTextIsValid,
     resetInput: resetTodoText,
-  } = useHttp(value => value.trim().length > 0);
+  } = useHttp(validateEmptyValue);
 
   const {
     todoInput: todoCategory,
@@ -21,7 +29,7 @@ const TodoForm = props => {
     todoInputHasError: todoCategoryHasError,
     todoInputIsValid: todoCategoryIsValid,
     resetInput: resetTodoCategory,
-  } = useHttp(value => value.trim().length > 0);
+  } = useHttp(validateEmptyValue);
 
   const {
     todoInput: todoDate,
@@ -30,15 +38,15 @@ const TodoForm = props => {
     todoInputHasError: todoDateHasError,
     todoInputIsValid: todoDateIsValid,
     resetInput: resetTodoDate,
-  } = useHttp(value => value.trim().length > 0);
+  } = useHttp(validateEmptyValue);
 
-  const textInvalidClass = todoTextHasError ? 'invalid' : '';
-  const categoryInvalidClass = todoCategoryHasError ? 'invalid' : '';
-  const dateInvalidClass = todoDateHasError ? 'invalid' : '';
+  const textInvalidClass = getInvalidClass(todoTextHasError);
+  const categoryInvalidClass = getInvalidClass(todoCategoryHasError);
+  const dateInvalidClass = getInvalidClass(todoDateHasError);
 
   const formIsValid = todoTextIsValid && todoCategoryIsValid && todoDateIsValid;
 
-  // Get min date for todo.
+  // Get minimum date for todo.
   const date = new Date();
   const year = date.getFullYear();
   const month = date.toLocaleString('en-US', { month: '2-digit' });

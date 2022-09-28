@@ -27,7 +27,7 @@ const App = () => {
       taskRemainingDay: dayRemaining,
     };
 
-    setTodoData(prevTask => [...prevTask, todo]);
+    setTodoData(prevTasks => [...prevTasks, todo]);
     setTodoId(prevId => ++prevId);
   };
 
