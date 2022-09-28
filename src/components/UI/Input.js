@@ -6,9 +6,9 @@ const Input = props => {
       id={props.id}
       type={props.type}
       placeholder={props.placeholder}
-      onChange={props.onChange}
-      onBlur={props.onBlur}
-      value={props.value}
+      onChange={props.inputObj.todoInputChangeHandler}
+      onBlur={props.inputObj.todoInputBlurHandler}
+      value={props.inputObj.todoInput}
       min={props.min ? props.min : null}
     />
   );

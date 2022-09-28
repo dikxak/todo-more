@@ -63,9 +63,7 @@ const TodoForm = props => {
         >
           <label htmlFor="todoText">Task Name: </label>
           <Input
-            value={textInput.todoInput}
-            onChange={textInput.todoInputChangeHandler}
-            onBlur={textInput.todoInputBlurHandler}
+            inputObj={textInput}
             id="todoText"
             type="text"
             placeholder="Enter task name"
@@ -79,9 +77,7 @@ const TodoForm = props => {
         >
           <label htmlFor="todoCategory">Task Category: </label>
           <Input
-            value={categoryInput.todoInput}
-            onChange={categoryInput.todoInputChangeHandler}
-            onBlur={categoryInput.todoInputBlurHandler}
+            inputObj={categoryInput}
             id="todoCategory"
             type="text"
             placeholder="Enter task category"
@@ -95,9 +91,7 @@ const TodoForm = props => {
         >
           <label htmlFor="todoDate">Task Date: </label>
           <Input
-            value={dateInput.todoInput}
-            onChange={dateInput.todoInputChangeHandler}
-            onBlur={dateInput.todoInputBlurHandler}
+            inputObj={dateInput}
             id="todoDate"
             type="date"
             placeholder="Enter task date"
