@@ -35,3 +35,8 @@ button {
   margin-bottom: 1.8rem;
   letter-spacing: -0.5px;
 }
+
+.error-msg {
+  font-size: 1.4rem;
+  color: #f03e3e;
+}
