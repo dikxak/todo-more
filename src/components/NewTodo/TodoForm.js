@@ -43,17 +43,14 @@ const TodoForm = props => {
   const categoryInvalidClass = getInvalidClass(categoryInput.todoInputHasError);
   const dateInvalidClass = getInvalidClass(dateInput.todoInputHasError);
 
-  const formIsValid =
-    textInput.todoInputIsValid &&
-    categoryInput.todoInputIsValid &&
-    dateInput.todoInputIsValid;
+  const inputs = [textInput, categoryInput, dateInput];
+
+  const formIsValid = inputs.every(input => input.todoInputIsValid);
 
   const todoFormSubmitHandler = e => {
     e.preventDefault();
 
-    textInput.todoInputBlurHandler(e);
-    categoryInput.todoInputBlurHandler(e);
-    dateInput.todoInputBlurHandler(e);
+    inputs.forEach(input => input.todoInputBlurHandler());
 
     if (!formIsValid) return;
 
@@ -63,9 +60,7 @@ const TodoForm = props => {
       todoDate: dateInput.todoInput,
     });
 
-    textInput.resetInput();
-    categoryInput.resetInput();
-    dateInput.resetInput();
+    inputs.forEach(input => input.resetInput());
   };
 
   return (
