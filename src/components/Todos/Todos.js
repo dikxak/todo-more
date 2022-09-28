@@ -10,7 +10,7 @@ const Todos = props => {
     content = props.todoData.map(data => {
       return (
         <TodoItem
-          id={data.id}
+          key={data.id}
           text={data.taskText}
           category={data.taskCategory}
           remainingDays={data.taskRemainingDay}
