@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-const useHttp = validateInput => {
+const useInput = validateInput => {
   const [todoInput, setTodoInput] = useState('');
   const [todoInputIsTouched, setTodoInputIsTouched] = useState(false);
 
@@ -31,4 +31,4 @@ const useHttp = validateInput => {
   };
 };
 
-export default useHttp;
+export default useInput;
