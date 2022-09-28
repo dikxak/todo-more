@@ -22,3 +22,16 @@ body {
 ul {
   list-style: none;
 }
+
+button {
+  display: inline-block;
+  cursor: pointer;
+  font: inherit;
+  border: none;
+}
+
+.primary-heading {
+  font-size: 3rem;
+  margin-bottom: 1.8rem;
+  letter-spacing: -0.5px;
+}
