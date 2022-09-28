@@ -76,27 +76,18 @@ const TodoForm = props => {
         >
           <label htmlFor="todoText">Task Name: </label>
           <Input inputObj={textInput} />
-          {textInput.todoInputHasError && (
-            <p className="error-msg">Task name can not be empty.</p>
-          )}
         </div>
         <div
           className={`${classes['form-control']} ${classes[categoryInvalidClass]}`}
         >
           <label htmlFor="todoCategory">Task Category: </label>
           <Input inputObj={categoryInput} />
-          {categoryInput.todoInputHasError && (
-            <p className="error-msg">Task category can not be empty.</p>
-          )}
         </div>
         <div
           className={`${classes['form-control']} ${classes[dateInvalidClass]}`}
         >
           <label htmlFor="todoDate">Task Date: </label>
           <Input inputObj={dateInput} />
-          {dateInput.todoInputHasError && (
-            <p className="error-msg">Task date can not be empty.</p>
-          )}
         </div>
       </div>
       <div className={classes['form-action']}>
