@@ -1,0 +1,55 @@
+.todo-item {
+  box-shadow: 0 0.25rem 0.75rem rgba(0, 0, 0, 0.1);
+  padding: 2.4rem 1.2rem;
+  border-radius: 0.5rem;
+
+  position: relative;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.todo-category {
+  display: inline-block;
+
+  padding: 0.2rem 0.4rem;
+
+  position: absolute;
+  top: -5%;
+  right: -1%;
+
+  font-size: 1.2rem;
+  color: #fff;
+
+  background-color: #6c584c;
+  border-radius: 0.25rem;
+}
+
+.todo-info {
+  display: flex;
+  flex-direction: column;
+  gap: 1.6rem;
+}
+
+.todo-text {
+  font-size: 1.8rem;
+  font-weight: 600;
+}
+
+.todo-date {
+  font-size: 1.4rem;
+  color: #666;
+}
+
+.btn-todo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background-color: transparent;
+
+  font-size: 2.4rem;
+
+  color: #f03e3e;
+}
