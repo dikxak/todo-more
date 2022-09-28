@@ -17,7 +17,7 @@ const Input = props => {
         }
       />
       {props.inputObj.todoInputHasError && (
-        <p className="error-msg">Task date can not be empty.</p>
+        <p className="error-msg">This field can not be empty.</p>
       )}
     </React.Fragment>
   );
