@@ -1,5 +1,7 @@
 import React from 'react';
 
+import Input from '../UI/Input';
+
 import useHttp from '../../hooks/use-input';
 
 import classes from './TodoForm.module.css';
@@ -76,7 +78,7 @@ const TodoForm = props => {
           className={`${classes['form-control']} ${classes[textInvalidClass]}`}
         >
           <label htmlFor="todoText">Task Name: </label>
-          <input
+          <Input
             value={todoText}
             onChange={todoTextChangeHandler}
             onBlur={todoTextBlurHandler}
@@ -92,7 +94,7 @@ const TodoForm = props => {
           className={`${classes['form-control']} ${classes[categoryInvalidClass]}`}
         >
           <label htmlFor="todoCategory">Task Category: </label>
-          <input
+          <Input
             value={todoCategory}
             onChange={todoCategoryChangeHandler}
             onBlur={todoCategoryBlurHandler}
@@ -108,7 +110,7 @@ const TodoForm = props => {
           className={`${classes['form-control']} ${classes[dateInvalidClass]}`}
         >
           <label htmlFor="todoDate">Task Date: </label>
-          <input
+          <Input
             value={todoDate}
             onChange={todoDateChangeHandler}
             onBlur={todoDateBlurHandler}
