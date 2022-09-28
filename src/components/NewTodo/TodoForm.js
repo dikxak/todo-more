@@ -11,6 +11,7 @@ const TodoForm = props => {
     todoInputBlurHandler: todoTextBlurHandler,
     todoInputHasError: todoTextHasError,
     todoInputIsValid: todoTextIsValid,
+    resetInput: resetTodoText,
   } = useHttp(value => value.trim().length > 0);
 
   const {
@@ -19,6 +20,7 @@ const TodoForm = props => {
     todoInputBlurHandler: todoCategoryBlurHandler,
     todoInputHasError: todoCategoryHasError,
     todoInputIsValid: todoCategoryIsValid,
+    resetInput: resetTodoCategory,
   } = useHttp(value => value.trim().length > 0);
 
   const {
@@ -27,6 +29,7 @@ const TodoForm = props => {
     todoInputBlurHandler: todoDateBlurHandler,
     todoInputHasError: todoDateHasError,
     todoInputIsValid: todoDateIsValid,
+    resetInput: resetTodoDate,
   } = useHttp(value => value.trim().length > 0);
 
   const textInvalidClass = todoTextHasError ? 'invalid' : '';
@@ -52,6 +55,10 @@ const TodoForm = props => {
     if (!formIsValid) return;
 
     props.onTodoSubmit({ todoText, todoCategory, todoDate });
+
+    resetTodoText();
+    resetTodoCategory();
+    resetTodoDate();
   };
 
   return (

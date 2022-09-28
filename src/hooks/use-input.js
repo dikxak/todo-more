@@ -16,12 +16,17 @@ const useHttp = validateInput => {
     setTodoInputIsTouched(true);
   };
 
+  const resetInput = () => {
+    setTodoInput('');
+  };
+
   return {
     todoInput,
     todoInputIsValid,
     todoInputHasError,
     todoInputChangeHandler,
     todoInputBlurHandler,
+    resetInput,
   };
 };
 
