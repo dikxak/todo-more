@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-const useInput = validateInput => {
+const useInput = (validateInput, inputAttributes) => {
   const [todoInput, setTodoInput] = useState('');
   const [todoInputIsTouched, setTodoInputIsTouched] = useState(false);
 
@@ -28,6 +28,7 @@ const useInput = validateInput => {
     todoInputChangeHandler,
     todoInputBlurHandler,
     resetInput,
+    inputAttributes,
   };
 };
 

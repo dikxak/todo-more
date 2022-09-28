@@ -15,9 +15,29 @@ const getInvalidClass = errorState => {
 };
 
 const TodoForm = props => {
-  const textInput = useInput(validateEmptyValue);
-  const categoryInput = useInput(validateEmptyValue);
-  const dateInput = useInput(validateEmptyValue);
+  // Get minimum date for todo.
+  const date = new Date();
+  const year = date.getFullYear();
+  const month = date.toLocaleString('en-US', { month: '2-digit' });
+  const day = date.toLocaleString('en-US', { day: '2-digit' });
+  const minDate = `${year}-${month}-${day}`;
+
+  const textInput = useInput(validateEmptyValue, {
+    type: 'text',
+    id: 'todoText',
+    placeholder: 'Enter task name',
+  });
+  const categoryInput = useInput(validateEmptyValue, {
+    type: 'text',
+    id: 'todoCategory',
+    placeholder: 'Enter task category',
+  });
+  const dateInput = useInput(validateEmptyValue, {
+    type: 'date',
+    id: 'todoDate',
+    placeholder: 'Enter task date',
+    min: minDate,
+  });
 
   const textInvalidClass = getInvalidClass(textInput.todoInputHasError);
   const categoryInvalidClass = getInvalidClass(categoryInput.todoInputHasError);
@@ -27,13 +47,6 @@ const TodoForm = props => {
     textInput.todoInputIsValid &&
     categoryInput.todoInputIsValid &&
     dateInput.todoInputIsValid;
-
-  // Get minimum date for todo.
-  const date = new Date();
-  const year = date.getFullYear();
-  const month = date.toLocaleString('en-US', { month: '2-digit' });
-  const day = date.toLocaleString('en-US', { day: '2-digit' });
-  const minDate = `${year}-${month}-${day}`;
 
   const todoFormSubmitHandler = e => {
     e.preventDefault();
@@ -62,12 +75,7 @@ const TodoForm = props => {
           className={`${classes['form-control']} ${classes[textInvalidClass]}`}
         >
           <label htmlFor="todoText">Task Name: </label>
-          <Input
-            inputObj={textInput}
-            id="todoText"
-            type="text"
-            placeholder="Enter task name"
-          />
+          <Input inputObj={textInput} />
           {textInput.todoInputHasError && (
             <p className="error-msg">Task name can not be empty.</p>
           )}
@@ -76,12 +84,7 @@ const TodoForm = props => {
           className={`${classes['form-control']} ${classes[categoryInvalidClass]}`}
         >
           <label htmlFor="todoCategory">Task Category: </label>
-          <Input
-            inputObj={categoryInput}
-            id="todoCategory"
-            type="text"
-            placeholder="Enter task category"
-          />
+          <Input inputObj={categoryInput} />
           {categoryInput.todoInputHasError && (
             <p className="error-msg">Task category can not be empty.</p>
           )}
@@ -90,13 +93,7 @@ const TodoForm = props => {
           className={`${classes['form-control']} ${classes[dateInvalidClass]}`}
         >
           <label htmlFor="todoDate">Task Date: </label>
-          <Input
-            inputObj={dateInput}
-            id="todoDate"
-            type="date"
-            placeholder="Enter task date"
-            min={minDate}
-          />
+          <Input inputObj={dateInput} />
           {dateInput.todoInputHasError && (
             <p className="error-msg">Task date can not be empty.</p>
           )}

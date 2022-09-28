@@ -3,13 +3,17 @@ import React from 'react';
 const Input = props => {
   return (
     <input
-      id={props.id}
-      type={props.type}
-      placeholder={props.placeholder}
+      id={props.inputObj.inputAttributes.id}
+      type={props.inputObj.inputAttributes.type}
+      placeholder={props.inputObj.inputAttributes.placeholder}
       onChange={props.inputObj.todoInputChangeHandler}
       onBlur={props.inputObj.todoInputBlurHandler}
       value={props.inputObj.todoInput}
-      min={props.min ? props.min : null}
+      min={
+        props.inputObj.inputAttributes.min
+          ? props.inputObj.inputAttributes.min
+          : null
+      }
     />
   );
 };
