@@ -18,6 +18,7 @@ const useHttp = validateInput => {
 
   const resetInput = () => {
     setTodoInput('');
+    setTodoInputIsTouched(false);
   };
 
   return {
