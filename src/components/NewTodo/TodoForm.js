@@ -2,7 +2,7 @@ import React from 'react';
 
 import Input from '../UI/Input';
 
-import useHttp from '../../hooks/use-input';
+import useInput from '../../hooks/use-input';
 
 import classes from './TodoForm.module.css';
 
@@ -15,38 +15,18 @@ const getInvalidClass = errorState => {
 };
 
 const TodoForm = props => {
-  const {
-    todoInput: todoText,
-    todoInputChangeHandler: todoTextChangeHandler,
-    todoInputBlurHandler: todoTextBlurHandler,
-    todoInputHasError: todoTextHasError,
-    todoInputIsValid: todoTextIsValid,
-    resetInput: resetTodoText,
-  } = useHttp(validateEmptyValue);
+  const textInput = useInput(validateEmptyValue);
+  const categoryInput = useInput(validateEmptyValue);
+  const dateInput = useInput(validateEmptyValue);
 
-  const {
-    todoInput: todoCategory,
-    todoInputChangeHandler: todoCategoryChangeHandler,
-    todoInputBlurHandler: todoCategoryBlurHandler,
-    todoInputHasError: todoCategoryHasError,
-    todoInputIsValid: todoCategoryIsValid,
-    resetInput: resetTodoCategory,
-  } = useHttp(validateEmptyValue);
+  const textInvalidClass = getInvalidClass(textInput.todoInputHasError);
+  const categoryInvalidClass = getInvalidClass(categoryInput.todoInputHasError);
+  const dateInvalidClass = getInvalidClass(dateInput.todoInputHasError);
 
-  const {
-    todoInput: todoDate,
-    todoInputChangeHandler: todoDateChangeHandler,
-    todoInputBlurHandler: todoDateBlurHandler,
-    todoInputHasError: todoDateHasError,
-    todoInputIsValid: todoDateIsValid,
-    resetInput: resetTodoDate,
-  } = useHttp(validateEmptyValue);
-
-  const textInvalidClass = getInvalidClass(todoTextHasError);
-  const categoryInvalidClass = getInvalidClass(todoCategoryHasError);
-  const dateInvalidClass = getInvalidClass(todoDateHasError);
-
-  const formIsValid = todoTextIsValid && todoCategoryIsValid && todoDateIsValid;
+  const formIsValid =
+    textInput.todoInputIsValid &&
+    categoryInput.todoInputIsValid &&
+    dateInput.todoInputIsValid;
 
   // Get minimum date for todo.
   const date = new Date();
@@ -58,17 +38,21 @@ const TodoForm = props => {
   const todoFormSubmitHandler = e => {
     e.preventDefault();
 
-    todoTextBlurHandler(e);
-    todoCategoryBlurHandler(e);
-    todoDateBlurHandler(e);
+    textInput.todoInputBlurHandler(e);
+    categoryInput.todoInputBlurHandler(e);
+    dateInput.todoInputBlurHandler(e);
 
     if (!formIsValid) return;
 
-    props.onTodoSubmit({ todoText, todoCategory, todoDate });
+    props.onTodoSubmit({
+      todoText: textInput.todoInput,
+      todoCategory: categoryInput.todoInput,
+      todoDate: dateInput.todoInput,
+    });
 
-    resetTodoText();
-    resetTodoCategory();
-    resetTodoDate();
+    textInput.resetInput();
+    categoryInput.resetInput();
+    dateInput.resetInput();
   };
 
   return (
@@ -79,14 +63,14 @@ const TodoForm = props => {
         >
           <label htmlFor="todoText">Task Name: </label>
           <Input
-            value={todoText}
-            onChange={todoTextChangeHandler}
-            onBlur={todoTextBlurHandler}
+            value={textInput.todoInput}
+            onChange={textInput.todoInputChangeHandler}
+            onBlur={textInput.todoInputBlurHandler}
             id="todoText"
             type="text"
             placeholder="Enter task name"
           />
-          {todoTextHasError && (
+          {textInput.todoInputHasError && (
             <p className="error-msg">Task name can not be empty.</p>
           )}
         </div>
@@ -95,14 +79,14 @@ const TodoForm = props => {
         >
           <label htmlFor="todoCategory">Task Category: </label>
           <Input
-            value={todoCategory}
-            onChange={todoCategoryChangeHandler}
-            onBlur={todoCategoryBlurHandler}
+            value={categoryInput.todoInput}
+            onChange={categoryInput.todoInputChangeHandler}
+            onBlur={categoryInput.todoInputBlurHandler}
             id="todoCategory"
             type="text"
             placeholder="Enter task category"
           />
-          {todoCategoryHasError && (
+          {categoryInput.todoInputHasError && (
             <p className="error-msg">Task category can not be empty.</p>
           )}
         </div>
@@ -111,15 +95,15 @@ const TodoForm = props => {
         >
           <label htmlFor="todoDate">Task Date: </label>
           <Input
-            value={todoDate}
-            onChange={todoDateChangeHandler}
-            onBlur={todoDateBlurHandler}
+            value={dateInput.todoInput}
+            onChange={dateInput.todoInputChangeHandler}
+            onBlur={dateInput.todoInputBlurHandler}
             id="todoDate"
             type="date"
             placeholder="Enter task date"
             min={minDate}
           />
-          {todoDateHasError && (
+          {dateInput.todoInputHasError && (
             <p className="error-msg">Task date can not be empty.</p>
           )}
         </div>
