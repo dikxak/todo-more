@@ -5,3 +5,9 @@
   flex-direction: column;
   gap: 1.6rem;
 }
+
+.user-msg {
+  font-size: 2rem;
+  font-weight: 600;
+  text-align: center;
+}

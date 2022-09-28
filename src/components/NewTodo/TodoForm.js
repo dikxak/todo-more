@@ -51,7 +51,7 @@ const TodoForm = props => {
 
     if (!formIsValid) return;
 
-    console.log('form is valid');
+    props.onTodoSubmit({ todoText, todoCategory, todoDate });
   };
 
   return (
