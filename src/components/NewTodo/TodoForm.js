@@ -1,113 +1,60 @@
 import React from 'react';
 
-import Input from '../UI/Input';
-
-import useInput from '../../hooks/use-input';
-
-import classes from './TodoForm.module.css';
-
-const validateEmptyValue = val => {
-  return val.trim().length > 0;
-};
-
-const getInvalidClass = errorState => {
-  return errorState ? 'invalid' : '';
-};
-
-const getMinimumDate = () => {
-  // Get minimum date for todo.
-  const date = new Date();
-  const year = date.getFullYear();
-  const month = date.toLocaleString('en-US', { month: '2-digit' });
-  const day = date.toLocaleString('en-US', { day: '2-digit' });
-  return `${year}-${month}-${day}`;
-};
+import { Formik, Form, Field } from 'formik';
 
 const TodoForm = props => {
-  const textInput = useInput(validateEmptyValue, {
-    type: 'text',
-    id: 'todoText',
-    placeholder: 'Enter task name',
-    label: 'Task Name:',
-  });
-  const categoryInput = useInput(validateEmptyValue, {
-    type: 'text',
-    id: 'todoCategory',
-    placeholder: 'Enter task category',
-    label: 'Task Category:',
-  });
-  const dateInput = useInput(validateEmptyValue, {
-    type: 'date',
-    id: 'todoDate',
-    placeholder: 'Enter task date',
-    min: getMinimumDate(),
-    label: 'Task Date:',
-  });
+  const validate = (values, props) => {
+    const errors = {};
 
-  const invalidClasses = {
-    textInvalidClass: '',
-    categoryInvalidClass: '',
-    dateInvalidClass: '',
-  };
+    if (!values.todoText) {
+      errors.todoText = 'Task name is required.';
+    }
+    if (!values.todoCategory) {
+      errors.todoCategory = 'Task category is required.';
+    }
+    if (!values.todoDate) {
+      errors.todoDate = 'Task date is required.';
+    }
 
-  const inputs = [textInput, categoryInput, dateInput];
-
-  // Get invalid class object from invalidClasses (e.g. textInvalidClass)
-  const getInvalidClassObj = i => {
-    return [Object.keys(invalidClasses)[i]];
-  };
-
-  // Initialize value for invalid class if any input is invalid.
-  inputs.forEach((input, i) => {
-    invalidClasses[getInvalidClassObj(i)] = getInvalidClass(
-      input.todoInputHasError
-    );
-  });
-
-  const formIsValid = inputs.every(input => input.todoInputIsValid);
-
-  const todoFormSubmitHandler = e => {
-    let todoValue = {};
-
-    e.preventDefault();
-
-    // When form is submitted, make all inputs as blurred.
-    inputs.forEach(input => input.todoInputBlurHandler());
-
-    if (!formIsValid) return;
-
-    // Make todo value consisting of different values.
-    inputs.forEach(input => {
-      todoValue[input.inputAttributes.id] = input.todoInput;
-    });
-    todoValue.isCompleted = false;
-
-    // Call function to add todo value on form submit.
-    props.onTodoSubmit(todoValue);
-
-    // Reset all inputs to empty string.
-    inputs.forEach(input => input.resetInput());
+    return errors;
   };
 
   return (
-    <form onSubmit={todoFormSubmitHandler} className={classes['form']}>
-      <div className={classes['form-group']}>
-        {inputs.map((input, i) => {
-          return (
-            <Input
-              key={input.inputAttributes.id}
-              invalidClass={invalidClasses[getInvalidClassObj(i)]}
-              inputObj={input}
-            />
-          );
-        })}
-      </div>
-      <div className={classes['form-action']}>
-        <button type="submit" className={classes['btn--submit']}>
-          Add Task
-        </button>
-      </div>
-    </form>
+    <Formik
+      initialValues={{
+        todoText: '',
+        todoCategory: '',
+        todoDate: '',
+      }}
+      onSubmit={values => {
+        props.onTodoSubmit(values);
+      }}
+      validate={validate}
+    >
+      {({ errors, touched }) => (
+        <Form>
+          <label htmlFor="todoText">Task Name:</label>
+          <Field id="todoText" name="todoText" placeholder="Enter task name" />
+          {errors.todoText && touched.todoText && <p>{errors.todoText}</p>}
+
+          <label htmlFor="todoCategory">Task Category:</label>
+          <Field
+            id="todoCategory"
+            name="todoCategory"
+            placeholder="Enter task category"
+          />
+          {errors.todoCategory && touched.todoCategory && (
+            <p>{errors.todoCategory}</p>
+          )}
+
+          <label htmlFor="todoDate">Enter Date:</label>
+          <Field id="todoDate" name="todoDate" type="date" />
+          {errors.todoDate && touched.todoDate && <p>{errors.todoDate}</p>}
+
+          <button type="submit">Submit</button>
+        </Form>
+      )}
+    </Formik>
   );
 };
 
