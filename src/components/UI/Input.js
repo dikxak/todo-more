@@ -3,7 +3,6 @@ import React from 'react';
 import classes from './Input.module.css';
 
 const Input = props => {
-  console.log(props.invalidClass);
   return (
     <div
       className={`${classes['form-control']} ${classes[props.invalidClass]}`}
