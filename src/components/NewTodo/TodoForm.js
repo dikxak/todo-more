@@ -14,14 +14,16 @@ const getInvalidClass = errorState => {
   return errorState ? 'invalid' : '';
 };
 
-const TodoForm = props => {
+const getMinimumDate = () => {
   // Get minimum date for todo.
   const date = new Date();
   const year = date.getFullYear();
   const month = date.toLocaleString('en-US', { month: '2-digit' });
   const day = date.toLocaleString('en-US', { day: '2-digit' });
-  const minDate = `${year}-${month}-${day}`;
+  return `${year}-${month}-${day}`;
+};
 
+const TodoForm = props => {
   const textInput = useInput(validateEmptyValue, {
     type: 'text',
     id: 'todoText',
@@ -36,7 +38,7 @@ const TodoForm = props => {
     type: 'date',
     id: 'todoDate',
     placeholder: 'Enter task date',
-    min: minDate,
+    min: getMinimumDate(),
   });
 
   const textInvalidClass = getInvalidClass(textInput.todoInputHasError);
@@ -44,21 +46,24 @@ const TodoForm = props => {
   const dateInvalidClass = getInvalidClass(dateInput.todoInputHasError);
 
   const inputs = [textInput, categoryInput, dateInput];
+  const todoKeys = ['todoText', 'todoCategory', 'todoDate'];
 
   const formIsValid = inputs.every(input => input.todoInputIsValid);
 
   const todoFormSubmitHandler = e => {
+    let todoValue = {};
+
     e.preventDefault();
 
     inputs.forEach(input => input.todoInputBlurHandler());
 
     if (!formIsValid) return;
 
-    props.onTodoSubmit({
-      todoText: textInput.todoInput,
-      todoCategory: categoryInput.todoInput,
-      todoDate: dateInput.todoInput,
+    inputs.forEach((input, i) => {
+      todoValue[todoKeys[i]] = input.todoInput;
     });
+
+    props.onTodoSubmit(todoValue);
 
     inputs.forEach(input => input.resetInput());
   };
