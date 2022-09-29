@@ -3,6 +3,7 @@ import React from 'react';
 import classes from './Input.module.css';
 
 const Input = props => {
+  console.log(props.invalidClass);
   return (
     <div
       className={`${classes['form-control']} ${classes[props.invalidClass]}`}
@@ -24,7 +25,10 @@ const Input = props => {
         }
       />
       {props.inputObj.todoInputHasError && (
-        <p className="error-msg">This field can not be empty.</p>
+        <p className="error-msg">
+          {props.inputObj.inputAttributes.label.replace(':', '')} can not be
+          empty.
+        </p>
       )}{' '}
     </div>
   );

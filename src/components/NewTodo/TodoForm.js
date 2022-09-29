@@ -44,12 +44,24 @@ const TodoForm = props => {
     label: 'Task Date:',
   });
 
-  const textInvalidClass = getInvalidClass(textInput.todoInputHasError);
-  const categoryInvalidClass = getInvalidClass(categoryInput.todoInputHasError);
-  const dateInvalidClass = getInvalidClass(dateInput.todoInputHasError);
+  const invalidClasses = {
+    textInvalidClass: '',
+    categoryInvalidClass: '',
+    dateInvalidClass: '',
+  };
 
   const inputs = [textInput, categoryInput, dateInput];
-  const todoKeys = ['todoText', 'todoCategory', 'todoDate'];
+
+  // Get invalid class object from invalidClasses (e.g. textInvalidClass)
+  const getInvalidClassObj = i => {
+    return [Object.keys(invalidClasses)[i]];
+  };
+
+  inputs.forEach((input, i) => {
+    invalidClasses[getInvalidClassObj(i)] = getInvalidClass(
+      input.todoInputHasError
+    );
+  });
 
   const formIsValid = inputs.every(input => input.todoInputIsValid);
 
@@ -62,8 +74,8 @@ const TodoForm = props => {
 
     if (!formIsValid) return;
 
-    inputs.forEach((input, i) => {
-      todoValue[todoKeys[i]] = input.todoInput;
+    inputs.forEach(input => {
+      todoValue[input.inputAttributes.id] = input.todoInput;
     });
     todoValue.isCompleted = false;
 
@@ -75,11 +87,15 @@ const TodoForm = props => {
   return (
     <form onSubmit={todoFormSubmitHandler} className={classes['form']}>
       <div className={classes['form-group']}>
-        <Input invalidClass={textInvalidClass} inputObj={textInput} />
-
-        <Input invalidClass={categoryInvalidClass} inputObj={categoryInput} />
-
-        <Input invalidClass={dateInvalidClass} inputObj={dateInput} />
+        {inputs.map((input, i) => {
+          return (
+            <Input
+              key={input.inputAttributes.id}
+              invalidClass={invalidClasses[getInvalidClassObj(i)]}
+              inputObj={input}
+            />
+          );
+        })}
       </div>
       <div className={classes['form-action']}>
         <button type="submit" className={classes['btn--submit']}>
