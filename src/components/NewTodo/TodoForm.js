@@ -57,6 +57,7 @@ const TodoForm = props => {
     return [Object.keys(invalidClasses)[i]];
   };
 
+  // Initialize value for invalid class if any input is invalid.
   inputs.forEach((input, i) => {
     invalidClasses[getInvalidClassObj(i)] = getInvalidClass(
       input.todoInputHasError
@@ -70,17 +71,21 @@ const TodoForm = props => {
 
     e.preventDefault();
 
+    // When form is submitted, make all inputs as blurred.
     inputs.forEach(input => input.todoInputBlurHandler());
 
     if (!formIsValid) return;
 
+    // Make todo value consisting of different values.
     inputs.forEach(input => {
       todoValue[input.inputAttributes.id] = input.todoInput;
     });
     todoValue.isCompleted = false;
 
+    // Call function to add todo value on form submit.
     props.onTodoSubmit(todoValue);
 
+    // Reset all inputs to empty string.
     inputs.forEach(input => input.resetInput());
   };
 
