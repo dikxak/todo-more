@@ -1,8 +1,15 @@
 import React from 'react';
 
+import classes from './Input.module.css';
+
 const Input = props => {
   return (
-    <React.Fragment>
+    <div
+      className={`${classes['form-control']} ${classes[props.invalidClass]}`}
+    >
+      <label htmlFor={props.inputObj.inputAttributes.id}>
+        {props.inputObj.inputAttributes.label}
+      </label>
       <input
         id={props.inputObj.inputAttributes.id}
         type={props.inputObj.inputAttributes.type}
@@ -18,8 +25,8 @@ const Input = props => {
       />
       {props.inputObj.todoInputHasError && (
         <p className="error-msg">This field can not be empty.</p>
-      )}
-    </React.Fragment>
+      )}{' '}
+    </div>
   );
 };
 

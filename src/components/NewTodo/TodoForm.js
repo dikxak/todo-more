@@ -28,17 +28,20 @@ const TodoForm = props => {
     type: 'text',
     id: 'todoText',
     placeholder: 'Enter task name',
+    label: 'Task Name:',
   });
   const categoryInput = useInput(validateEmptyValue, {
     type: 'text',
     id: 'todoCategory',
     placeholder: 'Enter task category',
+    label: 'Task Category:',
   });
   const dateInput = useInput(validateEmptyValue, {
     type: 'date',
     id: 'todoDate',
     placeholder: 'Enter task date',
     min: getMinimumDate(),
+    label: 'Task Date:',
   });
 
   const textInvalidClass = getInvalidClass(textInput.todoInputHasError);
@@ -72,24 +75,11 @@ const TodoForm = props => {
   return (
     <form onSubmit={todoFormSubmitHandler} className={classes['form']}>
       <div className={classes['form-group']}>
-        <div
-          className={`${classes['form-control']} ${classes[textInvalidClass]}`}
-        >
-          <label htmlFor="todoText">Task Name: </label>
-          <Input inputObj={textInput} />
-        </div>
-        <div
-          className={`${classes['form-control']} ${classes[categoryInvalidClass]}`}
-        >
-          <label htmlFor="todoCategory">Task Category: </label>
-          <Input inputObj={categoryInput} />
-        </div>
-        <div
-          className={`${classes['form-control']} ${classes[dateInvalidClass]}`}
-        >
-          <label htmlFor="todoDate">Task Date: </label>
-          <Input inputObj={dateInput} />
-        </div>
+        <Input invalidClass={textInvalidClass} inputObj={textInput} />
+
+        <Input invalidClass={categoryInvalidClass} inputObj={categoryInput} />
+
+        <Input invalidClass={dateInvalidClass} inputObj={dateInput} />
       </div>
       <div className={classes['form-action']}>
         <button type="submit" className={classes['btn--submit']}>
