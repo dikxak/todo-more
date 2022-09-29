@@ -6,9 +6,16 @@ import classes from './Todos.module.css';
 
 const Todos = props => {
   let content;
+
   if (props.todoData.length > 0) {
     content = props.todoData.map(data => {
-      return <TodoItem key={data.id} data={data} />;
+      return (
+        <TodoItem
+          onClick={props.onTaskComplete.bind(null, data.id)}
+          key={data.id}
+          data={data}
+        />
+      );
     });
   } else {
     content = (

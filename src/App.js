@@ -31,11 +31,18 @@ const App = () => {
     setTodoId(prevId => ++prevId);
   };
 
+  const handleTaskCompletion = taskId => {
+    const taskObj = todoData.find(data => data.id === taskId);
+    taskObj.isCompleted = true;
+
+    setTodoData(prevTasks => [...prevTasks]);
+  };
+
   return (
     <Container>
       <h1 className="primary-heading">Todo More</h1>
       <TodoForm onTodoSubmit={todoDataAddHandler} />
-      <Todos todoData={todoData} />
+      <Todos onTaskComplete={handleTaskCompletion} todoData={todoData} />
     </Container>
   );
 };

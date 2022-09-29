@@ -62,6 +62,7 @@ const TodoForm = props => {
     inputs.forEach((input, i) => {
       todoValue[todoKeys[i]] = input.todoInput;
     });
+    todoValue.isCompleted = false;
 
     props.onTodoSubmit(todoValue);
 

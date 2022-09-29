@@ -8,6 +8,8 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+
+  transition: all 0.35s linear;
 }
 
 .todo-category {
@@ -42,6 +44,10 @@
   color: #666;
 }
 
+.todo-complete {
+  opacity: 0.65;
+}
+
 .btn-todo {
   display: flex;
   align-items: center;
@@ -52,4 +58,9 @@
   font-size: 2.4rem;
 
   color: #f03e3e;
+}
+
+.todo-complete .btn-todo {
+  color: #2f9e44;
+  cursor: not-allowed;
 }

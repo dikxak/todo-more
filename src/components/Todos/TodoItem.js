@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { MdCancel } from 'react-icons/md';
+import { FaCheckCircle } from 'react-icons/fa';
 
 import classes from './TodoItem.module.css';
 
@@ -16,7 +17,11 @@ const TodoItem = props => {
   }
 
   return (
-    <li className={classes['todo-item']}>
+    <li
+      className={`${classes['todo-item']} ${
+        classes[props.data.isCompleted ? 'todo-complete' : '']
+      }`}
+    >
       <span className={classes['todo-category']}>
         {props.data.taskCategory}
       </span>
@@ -26,8 +31,12 @@ const TodoItem = props => {
         <p className={classes['todo-date']}>{remainingText}</p>
       </div>
 
-      <button title="Completed task" className={classes['btn-todo']}>
-        <MdCancel />
+      <button
+        onClick={props.onClick}
+        title="Completed task"
+        className={classes['btn-todo']}
+      >
+        {props.data.isCompleted ? <FaCheckCircle /> : <MdCancel />}
       </button>
     </li>
   );
