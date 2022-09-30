@@ -13,6 +13,24 @@ const getMinimumDate = () => {
   return `${year}-${month}-${day}`;
 };
 
+const getCapitalizedString = str => {
+  let capitalizedStr = '',
+    spaceIndex = 0;
+
+  str.split('').forEach((s, i) => {
+    if (i === 0) capitalizedStr += s.toUpperCase();
+    else if (s === ' ') {
+      spaceIndex = i + 1;
+      capitalizedStr += s;
+    } else if (i === spaceIndex) {
+      capitalizedStr += s.toUpperCase();
+    } else {
+      capitalizedStr += s;
+    }
+  });
+  return capitalizedStr;
+};
+
 const TodoForm = props => {
   const inputAttributes = {
     todoText: {
@@ -33,7 +51,22 @@ const TodoForm = props => {
       placeholder: 'Enter task date',
       min: getMinimumDate(),
     },
+
+    todoPriority: {
+      type: 'select',
+      label: 'Task Priority',
+      placeholder: 'Select task priority',
+    },
   };
+
+  const priorityList = [
+    'Select Priority',
+    'top',
+    'very high',
+    'high',
+    'medium',
+    'low',
+  ];
 
   const validate = (values, props) => {
     const errors = {};
@@ -54,6 +87,7 @@ const TodoForm = props => {
         todoText: '',
         todoCategory: '',
         todoDate: '',
+        todoPriority: '',
       }}
       onSubmit={(values, { resetForm }) => {
         props.onTodoSubmit(values);
@@ -64,7 +98,7 @@ const TodoForm = props => {
       {({ errors, touched }) => (
         <Form className={classes['form']}>
           <div className={classes['form-group']}>
-            {Object.keys(inputAttributes).map(key => {
+            {Object.keys(inputAttributes).map((key, i) => {
               const inputObj = inputAttributes[key];
 
               return (
@@ -75,13 +109,29 @@ const TodoForm = props => {
                   }`}
                 >
                   <label htmlFor={key}>{inputObj.label}</label>
-                  <Field
-                    type={inputObj.type}
-                    id={key}
-                    name={key}
-                    placeholder={inputObj.placeholder}
-                    min={inputObj.min && inputObj.min}
-                  />
+                  {i === Object.keys(inputAttributes).length - 1 ? (
+                    <Field as={inputObj.type} name={key} id={key}>
+                      {priorityList.map((priority, i) => {
+                        return (
+                          <option
+                            disabled={i === 0}
+                            key={priority}
+                            value={i === 0 ? '' : priority}
+                          >
+                            {getCapitalizedString(priority)}
+                          </option>
+                        );
+                      })}
+                    </Field>
+                  ) : (
+                    <Field
+                      type={inputObj.type}
+                      id={key}
+                      name={key}
+                      placeholder={inputObj.placeholder}
+                      min={inputObj.min && inputObj.min}
+                    />
+                  )}
                   {errors[key] && touched[key] && (
                     <p className="error-msg">{errors[key]}</p>
                   )}

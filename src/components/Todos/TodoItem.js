@@ -20,7 +20,7 @@ const TodoItem = props => {
     <li
       className={`${classes['todo-item']} ${
         classes[props.data.isCompleted ? 'todo-complete' : '']
-      }`}
+      } ${classes[props.data.taskPriority.replace(' ', '-')]}`}
     >
       <span className={classes['todo-category']}>
         {props.data.taskCategory}

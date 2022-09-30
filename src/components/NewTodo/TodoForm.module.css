@@ -21,7 +21,8 @@
 }
 
 .form-control label,
-.form-control input {
+.form-control input,
+.form-control select {
   display: inline-block;
 }
 
@@ -31,7 +32,8 @@
   letter-spacing: -0.25px;
 }
 
-.form-control input {
+.form-control input,
+.form-control select {
   padding: 1.2rem 1.6rem;
   border: 1px solid #ddd;
   border-radius: 0.5rem;
@@ -39,16 +41,19 @@
   font-size: 1.4rem;
 }
 
-.invalid.form-control input {
+.invalid.form-control input,
+.invalid.form-control select {
   background-color: #fff5f5;
   border: 1px solid #ffc9c9;
 }
 
-.form-control input:focus {
+.form-control input:focus,
+.form-control select:focus {
   outline: 1px solid #aaa;
 }
 
-.invalid.form-control input:focus {
+.invalid.form-control input:focus,
+.invalid.form-control select:focus {
   outline: 1px solid #ffc9c9;
 }
 

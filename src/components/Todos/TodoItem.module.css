@@ -12,6 +12,26 @@
   transition: all 0.35s linear;
 }
 
+.top.todo-item {
+  background-color: #ffe3e3;
+}
+
+.very-high.todo-item {
+  background-color: #ffe8cc;
+}
+
+.high.todo-item {
+  background-color: #fff3bf;
+}
+
+.medium.todo-item {
+  background-color: #d3f9d8;
+}
+
+.low.todo-item {
+  background-color: #d0ebff;
+}
+
 .todo-category {
   display: inline-block;
 

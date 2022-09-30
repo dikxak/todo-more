@@ -25,6 +25,7 @@ const App = () => {
       taskText: todoData.todoText,
       taskCategory: todoData.todoCategory,
       taskRemainingDay: dayRemaining,
+      taskPriority: todoData.todoPriority,
     };
 
     setTodoData(prevTasks => [...prevTasks, todo]);
