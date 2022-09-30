@@ -4,6 +4,15 @@ import { Formik, Form, Field } from 'formik';
 
 import classes from './TodoForm.module.css';
 
+const getMinimumDate = () => {
+  // Get minimum date for todo.
+  const date = new Date();
+  const year = date.getFullYear();
+  const month = date.toLocaleString('en-US', { month: '2-digit' });
+  const day = date.toLocaleString('en-US', { day: '2-digit' });
+  return `${year}-${month}-${day}`;
+};
+
 const TodoForm = props => {
   const inputAttributes = {
     todoText: {
@@ -22,6 +31,7 @@ const TodoForm = props => {
       type: 'date',
       label: 'Task Date:',
       placeholder: 'Enter task date',
+      min: getMinimumDate(),
     },
   };
 
@@ -70,6 +80,7 @@ const TodoForm = props => {
                     id={key}
                     name={key}
                     placeholder={inputObj.placeholder}
+                    min={inputObj.min && inputObj.min}
                   />
                   {errors[key] && touched[key] && (
                     <p className="error-msg">{errors[key]}</p>
