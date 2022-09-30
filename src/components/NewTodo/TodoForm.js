@@ -31,7 +31,19 @@ const getCapitalizedString = str => {
   return capitalizedStr;
 };
 
+const getRemainingDays = date => {
+  const date1 = new Date(date);
+  const date2 = new Date();
+
+  const dateDifference = date1.getTime() - date2.getTime();
+  const dayDifference = Math.ceil(dateDifference / (1000 * 3600 * 24));
+
+  return dayDifference;
+};
+
 const TodoForm = props => {
+  const { todoEditData } = props;
+
   const inputAttributes = {
     todoText: {
       type: 'text',
@@ -81,19 +93,30 @@ const TodoForm = props => {
     return errors;
   };
 
-  return (
-    <Formik
-      initialValues={{
+  const formValue = todoEditData
+    ? todoEditData
+    : {
         todoText: '',
         todoCategory: '',
         todoDate: '',
         todoPriority: '',
-      }}
+      };
+
+  return (
+    <Formik
+      initialValues={formValue}
       onSubmit={(values, { resetForm }) => {
-        props.onTodoSubmit(values);
+        const data = {
+          ...values,
+          todoRemainingDay: getRemainingDays(values.todoDate),
+        };
+
+        todoEditData ? props.onTodoEdit(data) : props.onTodoAdd(data);
+
         resetForm();
       }}
       validate={validate}
+      enableReinitialize={true}
     >
       {({ errors, touched }) => (
         <Form className={classes['form']}>
@@ -141,7 +164,7 @@ const TodoForm = props => {
           </div>
           <div className={classes['form-action']}>
             <button className={classes['btn--submit']} type="submit">
-              Submit
+              {todoEditData ? 'Update Task' : 'Add Task'}
             </button>
           </div>
         </Form>

@@ -68,6 +68,12 @@
   opacity: 0.65;
 }
 
+.todo-control-group {
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+}
+
 .btn-todo {
   display: flex;
   align-items: center;
@@ -76,8 +82,14 @@
   background-color: transparent;
 
   font-size: 2.4rem;
+}
 
+.btn-todo-complete {
   color: #f03e3e;
+}
+
+.btn-todo-edit {
+  color: #777;
 }
 
 .todo-complete .btn-todo {
