@@ -2,19 +2,38 @@ import React from 'react';
 
 import { Formik, Form, Field } from 'formik';
 
+import classes from './TodoForm.module.css';
+
 const TodoForm = props => {
+  const inputAttributes = {
+    todoText: {
+      type: 'text',
+      label: 'Task Name:',
+      placeholder: 'Enter task name',
+    },
+
+    todoCategory: {
+      type: 'text',
+      label: 'Task Category:',
+      placeholder: 'Enter task category',
+    },
+
+    todoDate: {
+      type: 'date',
+      label: 'Task Date:',
+      placeholder: 'Enter task date',
+    },
+  };
+
   const validate = (values, props) => {
     const errors = {};
 
-    if (!values.todoText) {
-      errors.todoText = 'Task name is required.';
-    }
-    if (!values.todoCategory) {
-      errors.todoCategory = 'Task category is required.';
-    }
-    if (!values.todoDate) {
-      errors.todoDate = 'Task date is required.';
-    }
+    Object.keys(inputAttributes).forEach(key => {
+      const inputObj = inputAttributes[key];
+
+      if (!values[key])
+        errors[key] = `${inputObj.label.replace(':', '')} is required.`;
+    });
 
     return errors;
   };
@@ -26,32 +45,44 @@ const TodoForm = props => {
         todoCategory: '',
         todoDate: '',
       }}
-      onSubmit={values => {
+      onSubmit={(values, { resetForm }) => {
         props.onTodoSubmit(values);
+        resetForm();
       }}
       validate={validate}
     >
       {({ errors, touched }) => (
-        <Form>
-          <label htmlFor="todoText">Task Name:</label>
-          <Field id="todoText" name="todoText" placeholder="Enter task name" />
-          {errors.todoText && touched.todoText && <p>{errors.todoText}</p>}
+        <Form className={classes['form']}>
+          <div className={classes['form-group']}>
+            {Object.keys(inputAttributes).map(key => {
+              const inputObj = inputAttributes[key];
 
-          <label htmlFor="todoCategory">Task Category:</label>
-          <Field
-            id="todoCategory"
-            name="todoCategory"
-            placeholder="Enter task category"
-          />
-          {errors.todoCategory && touched.todoCategory && (
-            <p>{errors.todoCategory}</p>
-          )}
-
-          <label htmlFor="todoDate">Enter Date:</label>
-          <Field id="todoDate" name="todoDate" type="date" />
-          {errors.todoDate && touched.todoDate && <p>{errors.todoDate}</p>}
-
-          <button type="submit">Submit</button>
+              return (
+                <div
+                  key={key}
+                  className={`${classes['form-control']} ${
+                    classes[errors[key] && touched[key] && 'invalid']
+                  }`}
+                >
+                  <label htmlFor={key}>{inputObj.label}</label>
+                  <Field
+                    type={inputObj.type}
+                    id={key}
+                    name={key}
+                    placeholder={inputObj.placeholder}
+                  />
+                  {errors[key] && touched[key] && (
+                    <p className="error-msg">{errors[key]}</p>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+          <div className={classes['form-action']}>
+            <button className={classes['btn--submit']} type="submit">
+              Submit
+            </button>
+          </div>
         </Form>
       )}
     </Formik>
