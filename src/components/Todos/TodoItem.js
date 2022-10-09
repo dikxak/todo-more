@@ -33,7 +33,7 @@ const TodoItem = props => {
 
       <div className={classes['todo-control-group']}>
         <button
-          onClick={props.onEdit}
+          onClick={props.onEdit.bind(null, props.data.id)}
           title="Edit task"
           className={`${classes['btn-todo']} ${classes['btn-todo-edit']}`}
         >
@@ -41,7 +41,7 @@ const TodoItem = props => {
         </button>
 
         <button
-          onClick={props.onComplete}
+          onClick={props.onComplete.bind(null, props.data.id)}
           title="Complete task"
           className={`${classes['btn-todo']} ${classes['btn-todo-complete']}`}
         >

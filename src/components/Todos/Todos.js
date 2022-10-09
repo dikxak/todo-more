@@ -11,8 +11,8 @@ const Todos = props => {
     content = props.todoData.map(data => {
       return (
         <TodoItem
-          onEdit={props.onTaskEdit.bind(null, data.id)}
-          onComplete={props.onTaskComplete.bind(null, data.id)}
+          onEdit={props.onTaskEdit}
+          onComplete={props.onTaskComplete}
           key={data.id}
           data={data}
         />

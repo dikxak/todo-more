@@ -29,15 +29,20 @@ const App = () => {
   };
 
   const todoDataEditHandler = editData => {
-    let editedData = todoData.find(data => data.id === editData.id);
+    setTodoData(prevTodoData => {
+      const newTodoData = prevTodoData.map(data => {
+        if (data.id === editData.id) {
+          return { ...data, ...editData };
+        }
 
-    Object.keys(editData).forEach(key => {
-      editedData[key] = editData[key];
+        return data;
+      });
+
+      return newTodoData;
     });
 
     // set to null - after update is done, form is reset.
     setUpdateTodoData(null);
-    setTodoData(prevData => [...prevData]);
   };
 
   return (

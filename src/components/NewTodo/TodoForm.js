@@ -47,19 +47,19 @@ const TodoForm = props => {
   const inputAttributes = {
     todoText: {
       type: 'text',
-      label: 'Task Name:',
+      label: 'Task Name',
       placeholder: 'Enter task name',
     },
 
     todoCategory: {
       type: 'text',
-      label: 'Task Category:',
+      label: 'Task Category',
       placeholder: 'Enter task category',
     },
 
     todoDate: {
       type: 'date',
-      label: 'Task Date:',
+      label: 'Task Date',
       placeholder: 'Enter task date',
       min: getMinimumDate(),
     },
@@ -131,8 +131,8 @@ const TodoForm = props => {
                     classes[errors[key] && touched[key] && 'invalid']
                   }`}
                 >
-                  <label htmlFor={key}>{inputObj.label}</label>
-                  {i === Object.keys(inputAttributes).length - 1 ? (
+                  <label htmlFor={key}>{inputObj.label}:</label>
+                  {inputAttributes[key].type === 'select' ? (
                     <Field as={inputObj.type} name={key} id={key}>
                       {priorityList.map((priority, i) => {
                         return (
