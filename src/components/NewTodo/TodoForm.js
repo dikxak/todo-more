@@ -31,16 +31,6 @@ const getCapitalizedString = str => {
   return capitalizedStr;
 };
 
-const getRemainingDays = date => {
-  const date1 = new Date(date);
-  const date2 = new Date();
-
-  const dateDifference = date1.getTime() - date2.getTime();
-  const dayDifference = Math.ceil(dateDifference / (1000 * 3600 * 24));
-
-  return dayDifference;
-};
-
 const TodoForm = props => {
   const { todoEditData } = props;
 
@@ -86,8 +76,7 @@ const TodoForm = props => {
     Object.keys(inputAttributes).forEach(key => {
       const inputObj = inputAttributes[key];
 
-      if (!values[key])
-        errors[key] = `${inputObj.label.replace(':', '')} is required.`;
+      if (!values[key]) errors[key] = `${inputObj.label} is required.`;
     });
 
     return errors;
@@ -108,7 +97,6 @@ const TodoForm = props => {
       onSubmit={(values, { resetForm }) => {
         const data = {
           ...values,
-          todoRemainingDay: getRemainingDays(values.todoDate),
         };
 
         todoEditData ? props.onTodoEdit(data) : props.onTodoAdd(data);

@@ -5,15 +5,26 @@ import { FaCheckCircle, FaEdit } from 'react-icons/fa';
 
 import classes from './TodoItem.module.css';
 
+const getRemainingDays = date => {
+  const date1 = new Date(date);
+  const date2 = new Date();
+
+  const dateDifference = date1.getTime() - date2.getTime();
+  const dayDifference = Math.ceil(dateDifference / (1000 * 3600 * 24));
+
+  return dayDifference;
+};
+
 const TodoItem = props => {
+  const remainingDays = getRemainingDays(props.data.todoDate);
   let remainingText;
 
-  if (props.data.todoRemainingDay === 0) {
+  if (remainingDays === 0) {
     remainingText = 'Today';
-  } else if (props.data.todoRemainingDay === 1) {
-    remainingText = `${props.data.todoRemainingDay} day remaining`;
+  } else if (remainingDays === 1) {
+    remainingText = `${remainingDays} day remaining`;
   } else {
-    remainingText = `${props.data.todoRemainingDay} days remaining`;
+    remainingText = `${remainingDays} days remaining`;
   }
 
   return (

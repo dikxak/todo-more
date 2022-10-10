@@ -16,10 +16,15 @@ const App = () => {
   };
 
   const handleTaskCompletion = taskId => {
-    const taskObj = todoData.find(data => data.id === taskId);
-    taskObj.isCompleted = true;
+    setTodoData(prevTasks => {
+      return prevTasks.map(task => {
+        if (task.id === taskId) {
+          return { ...task, isCompleted: true };
+        }
 
-    setTodoData(prevTasks => [...prevTasks]);
+        return task;
+      });
+    });
   };
 
   const handleTaskEdit = taskId => {
