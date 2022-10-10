@@ -25,7 +25,7 @@ const App = () => {
   const handleTaskEdit = taskId => {
     const updateData = todoData.find(data => data.id === taskId);
 
-    setUpdateTodoData(updateData);
+    setUpdateTodoData({ ...updateData });
   };
 
   const todoDataEditHandler = editData => {
