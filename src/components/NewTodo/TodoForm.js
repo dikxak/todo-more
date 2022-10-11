@@ -1,8 +1,8 @@
-import React from 'react';
-
-import { Formik, Form, Field } from 'formik';
+import React, { useState } from 'react';
 
 import classes from './TodoForm.module.css';
+
+import formSchema from '../../json/todoJson.json';
 
 const getMinimumDate = () => {
   // Get minimum date for todo.
@@ -10,6 +10,7 @@ const getMinimumDate = () => {
   const year = date.getFullYear();
   const month = date.toLocaleString('en-US', { month: '2-digit' });
   const day = date.toLocaleString('en-US', { day: '2-digit' });
+
   return `${year}-${month}-${day}`;
 };
 
@@ -31,133 +32,130 @@ const getCapitalizedString = str => {
   return capitalizedStr;
 };
 
+const initialValue = {};
+const initialError = {};
+
+formSchema.elements.forEach(el => {
+  initialValue[Object.keys(el)[0]] = initialError[Object.keys(el)[0]] = '';
+});
+
 const TodoForm = props => {
-  const { todoEditData } = props;
+  const [inputValues, setInputValues] = useState(
+    props.todoEditData ? props.todoEditData : initialValue
+  );
+  const [inputErrors, setInputErrors] = useState(initialError);
 
-  const inputAttributes = {
-    todoText: {
-      type: 'text',
-      label: 'Task Name',
-      placeholder: 'Enter task name',
-    },
+  const inputChangeHandler = (elemInfo, e) => {
+    const key = Object.keys(elemInfo)[0];
+    const elObj = elemInfo[key];
 
-    todoCategory: {
-      type: 'text',
-      label: 'Task Category',
-      placeholder: 'Enter task category',
-    },
+    validate(key, e.target.value, elObj.label);
 
-    todoDate: {
-      type: 'date',
-      label: 'Task Date',
-      placeholder: 'Enter task date',
-      min: getMinimumDate(),
-    },
-
-    todoPriority: {
-      type: 'select',
-      label: 'Task Priority',
-      placeholder: 'Select task priority',
-    },
+    setInputValues(prevValues => {
+      return { ...prevValues, [key]: e.target.value };
+    });
   };
 
-  const priorityList = [
-    'Select Priority',
-    'top',
-    'very high',
-    'high',
-    'medium',
-    'low',
-  ];
+  const inputBlurHandler = (elemInfo, e) => {
+    const key = Object.keys(elemInfo)[0];
+    const elObj = elemInfo[key];
 
-  const validate = (values, props) => {
-    const errors = {};
+    validate(key, e.target.value, elObj.label);
+  };
 
-    Object.keys(inputAttributes).forEach(key => {
-      const inputObj = inputAttributes[key];
+  const validate = (key, value, label) => {
+    if (!value)
+      setInputErrors(prevErrors => {
+        return { ...prevErrors, [key]: `${label} cannot be empty.` };
+      });
+    else
+      setInputErrors(prevErrors => {
+        return { ...prevErrors, [key]: '' };
+      });
+  };
 
-      if (!values[key]) errors[key] = `${inputObj.label} is required.`;
+  const formSubmitHandler = e => {
+    e.preventDefault();
+    let returnFlag = false;
+
+    Object.keys(inputValues).forEach((key, i) => {
+      const value = inputValues[key];
+      const label = formSchema.elements[i][key].label;
+
+      validate(key, value, label);
     });
 
-    return errors;
+    Object.keys(inputErrors).forEach(key => {
+      if (!inputErrors[key]) {
+        returnFlag = true;
+        return;
+      }
+    });
+
+    if (returnFlag) return;
+
+    console.log('returned');
   };
 
-  const formValue = todoEditData
-    ? todoEditData
-    : {
-        todoText: '',
-        todoCategory: '',
-        todoDate: '',
-        todoPriority: '',
-      };
-
   return (
-    <Formik
-      initialValues={formValue}
-      onSubmit={(values, { resetForm }) => {
-        const data = {
-          ...values,
-        };
+    <form onSubmit={formSubmitHandler} className={classes['form']}>
+      <div className={classes['form-group']}>
+        {formSchema.elements.map(el => {
+          const key = Object.keys(el)[0];
+          const elObj = el[key];
 
-        todoEditData ? props.onTodoEdit(data) : props.onTodoAdd(data);
-
-        resetForm();
-      }}
-      validate={validate}
-      enableReinitialize={true}
-    >
-      {({ errors, touched }) => (
-        <Form className={classes['form']}>
-          <div className={classes['form-group']}>
-            {Object.keys(inputAttributes).map((key, i) => {
-              const inputObj = inputAttributes[key];
-
-              return (
-                <div
-                  key={key}
-                  className={`${classes['form-control']} ${
-                    classes[errors[key] && touched[key] && 'invalid']
-                  }`}
+          return (
+            <div key={key} className={classes['form-control']}>
+              <label htmlFor={key}>{elObj.label}</label>
+              {elObj.type === 'select' ? (
+                <select
+                  onChange={inputChangeHandler.bind(null, el)}
+                  onBlur={inputBlurHandler.bind(null, el)}
+                  defaultValue=""
+                  name={key}
+                  id={key}
                 >
-                  <label htmlFor={key}>{inputObj.label}:</label>
-                  {inputAttributes[key].type === 'select' ? (
-                    <Field as={inputObj.type} name={key} id={key}>
-                      {priorityList.map((priority, i) => {
-                        return (
-                          <option
-                            disabled={i === 0}
-                            key={priority}
-                            value={i === 0 ? '' : priority}
-                          >
-                            {getCapitalizedString(priority)}
-                          </option>
-                        );
-                      })}
-                    </Field>
-                  ) : (
-                    <Field
-                      type={inputObj.type}
-                      id={key}
-                      name={key}
-                      placeholder={inputObj.placeholder}
-                      min={inputObj.min && inputObj.min}
-                    />
-                  )}
-                  {errors[key] && touched[key] && (
-                    <p className="error-msg">{errors[key]}</p>
-                  )}
-                </div>
-              );
-            })}
-          </div>
-          <div className={classes['form-action']}>
-            <button className={classes['btn--submit']} type="submit">
-              {todoEditData ? 'Update Task' : 'Add Task'}
-            </button>
-          </div>
-        </Form>
-      )}
-    </Formik>
+                  {elObj.options.map((opt, i) => {
+                    return (
+                      <option
+                        disabled={i === 0}
+                        key={opt}
+                        value={i === 0 ? '' : opt}
+                      >
+                        {getCapitalizedString(opt)}
+                      </option>
+                    );
+                  })}
+                </select>
+              ) : (
+                <input
+                  id={key}
+                  onChange={inputChangeHandler.bind(null, el)}
+                  onBlur={inputBlurHandler.bind(null, el)}
+                  type={elObj.type}
+                  min={
+                    elObj.min
+                      ? elObj.min
+                      : elObj.type === 'date'
+                      ? getMinimumDate()
+                      : null
+                  }
+                  placeholder={elObj.placeholder}
+                />
+              )}
+              {inputErrors[key] && (
+                <p className="error-msg">{inputErrors[key]}</p>
+              )}
+            </div>
+          );
+        })}
+      </div>
+      <div className={classes['form-action']}>
+        <button type="submit" className={classes['btn--submit']}>
+          Add Task
+        </button>
+      </div>
+    </form>
   );
 };
 

@@ -1,0 +1,42 @@
+{
+  "title": "Add todo tasks",
+  "subTitle": "Start adding todo tasks",
+  "elements": [
+    {
+      "todoText": {
+        "type": "text",
+        "label": "Task Name",
+        "placeholder": "Enter task name"
+      }
+    },
+    {
+      "todoCategory": {
+        "type": "text",
+        "label": "Task Category",
+        "placeholder": "Enter task category"
+      }
+    },
+    {
+      "todoDate": {
+        "type": "date",
+        "label": "Task Date",
+        "placeholder": "Enter task date"
+      }
+    },
+    {
+      "todoPriority": {
+        "type": "select",
+        "label": "Task Priority",
+        "placeholder": "Select task priority",
+        "options": [
+          "Select Priority",
+          "top",
+          "very high",
+          "high",
+          "medium",
+          "low"
+        ]
+      }
+    }
+  ]
+}
