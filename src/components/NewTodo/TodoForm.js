@@ -86,7 +86,7 @@ const TodoForm = props => {
     });
 
     Object.keys(inputErrors).forEach(key => {
-      if (!inputErrors[key]) {
+      if (inputErrors[key]) {
         returnFlag = true;
         return;
       }
@@ -94,7 +94,9 @@ const TodoForm = props => {
 
     if (returnFlag) return;
 
-    console.log('returned');
+    console.log(inputValues);
+    console.log(inputErrors);
+    // console.log('returned');
   };
 
   return (
