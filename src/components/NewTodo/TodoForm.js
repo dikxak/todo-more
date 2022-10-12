@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import classes from './TodoForm.module.css';
 
@@ -45,28 +45,38 @@ const TodoForm = props => {
   );
   const [inputErrors, setInputErrors] = useState(initialError);
 
-  const inputChangeHandler = (elemInfo, e) => {
+  const formIsValid = Object.keys(inputValues).every(key => {
+    return inputValues[key] !== '';
+  });
+
+  useEffect(() => {
+    if (props.todoEditData) setInputValues(props.todoEditData);
+  }, [props.todoEditData]);
+
+  const inputActionHandler = (elemInfo, value) => {
     const key = Object.keys(elemInfo)[0];
     const elObj = elemInfo[key];
 
-    validate(key, e.target.value, elObj.label);
+    validate(key, value, elObj.label);
+  };
+
+  const inputChangeHandler = (elemInfo, e) => {
+    const key = Object.keys(elemInfo)[0];
+
+    inputActionHandler(elemInfo, e.target.value);
 
     setInputValues(prevValues => {
       return { ...prevValues, [key]: e.target.value };
     });
   };
 
-  const inputBlurHandler = (elemInfo, e) => {
-    const key = Object.keys(elemInfo)[0];
-    const elObj = elemInfo[key];
-
-    validate(key, e.target.value, elObj.label);
-  };
-
   const validate = (key, value, label) => {
     if (!value)
       setInputErrors(prevErrors => {
-        return { ...prevErrors, [key]: `${label} cannot be empty.` };
+        return {
+          ...prevErrors,
+          [key]: `${label} cannot be empty.`,
+        };
       });
     else
       setInputErrors(prevErrors => {
@@ -76,27 +86,24 @@ const TodoForm = props => {
 
   const formSubmitHandler = e => {
     e.preventDefault();
-    let returnFlag = false;
 
-    Object.keys(inputValues).forEach((key, i) => {
-      const value = inputValues[key];
-      const label = formSchema.elements[i][key].label;
+    if (!formIsValid) {
+      Object.keys(inputValues).forEach((key, i) => {
+        const value = inputValues[key];
+        const label = formSchema.elements[i][key].label;
 
-      validate(key, value, label);
-    });
+        validate(key, value, label);
+      });
 
-    Object.keys(inputErrors).forEach(key => {
-      if (inputErrors[key]) {
-        returnFlag = true;
-        return;
-      }
-    });
+      return;
+    }
 
-    if (returnFlag) return;
+    props.todoEditData
+      ? props.onTodoEdit(inputValues)
+      : props.onTodoAdd(inputValues);
 
-    console.log(inputValues);
-    console.log(inputErrors);
-    // console.log('returned');
+    setInputValues(initialValue);
+    setInputErrors(initialError);
   };
 
   return (
@@ -108,12 +115,14 @@ const TodoForm = props => {
 
           return (
             <div key={key} className={classes['form-control']}>
-              <label htmlFor={key}>{elObj.label}</label>
+              <label htmlFor={key}>{elObj.label}:</label>
               {elObj.type === 'select' ? (
                 <select
                   onChange={inputChangeHandler.bind(null, el)}
-                  onBlur={inputBlurHandler.bind(null, el)}
-                  defaultValue=""
+                  onBlur={e => {
+                    inputActionHandler(el, e.target.value);
+                  }}
+                  value={inputValues[key]}
                   name={key}
                   id={key}
                 >
@@ -131,9 +140,12 @@ const TodoForm = props => {
                 </select>
               ) : (
                 <input
+                  value={inputValues[key]}
                   id={key}
                   onChange={inputChangeHandler.bind(null, el)}
-                  onBlur={inputBlurHandler.bind(null, el)}
+                  onBlur={e => {
+                    inputActionHandler(el, e.target.value);
+                  }}
                   type={elObj.type}
                   min={
                     elObj.min
@@ -154,7 +166,7 @@ const TodoForm = props => {
       </div>
       <div className={classes['form-action']}>
         <button type="submit" className={classes['btn--submit']}>
-          Add Task
+          {props.todoEditData ? 'Update Task' : 'Add Task'}
         </button>
       </div>
     </form>
